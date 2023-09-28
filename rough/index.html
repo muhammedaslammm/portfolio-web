@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body style="font-family: Arial, Helvetica, sans-serif">
+    <section>
+      <form name="submit-to-google-sheet">
+        <h1 style="padding: 0; margin: 0; font-size: 15px; margin-bottom: 20px">
+          fill the form
+        </h1>
+        <input type="text" placeholder="name" name="name" id="name" /><br />
+        <input type="email" placeholder="email" name="email" id="email" /><br />
+        <input
+          type="tel"
+          id="phone_number"
+          name="phoneNumber"
+          placeholder="phone"
+        />
+
+        <div class="gender">
+          <label class="genderlabel">gender: </label><br />
+          <label for="male">male</label>
+          <input type="radio" name="gender" id="male" value="male" />
+
+          <label for="female">female</label>
+          <input type="radio" name="gender" id="female" value="female" />
+        </div>
+        <div id="successMessage"></div>
+        <input type="submit" id="submit_button" />
+      </form>
+
+      <script>
+        const scriptURL =
+          "https://script.google.com/macros/s/AKfycbzwdYA96er0oSfuZKIDekw8pf3LA6z2wpTqewuFqrOdK8oGjOUkv1nn2IbacPSLgVNKyQ/exec";
+        const form = document.forms["submit-to-google-sheet"];
+        const successmessage = document.getElementById("successMessage");
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          fetch(scriptURL, { method: "POST", body: new FormData(form) })
+            .then((response) => {
+              successmessage.innerHTML = "form submitted";
+              setTimeout(function () {
+                successmessage.innerHTML = "";
+              }, 2000);
+              form.reset();
+            })
+            .catch((error) => console.error("Error!", error.message));
+        });
+      </script>
+    </section>
+  </body>
+</html>
